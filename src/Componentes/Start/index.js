@@ -1,6 +1,6 @@
 import "./style.css"
 
-function TelaInicial() {
+function Start() {
     return (
     <>
         <p class="teste">Tela Inicial</p>
@@ -8,4 +8,4 @@ function TelaInicial() {
     )
 }
 
-export default TelaInicial;
+export default Start;
