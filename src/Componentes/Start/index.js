@@ -19,21 +19,19 @@ useEffect(() => {
     promise.catch(()=>console.log("deu ruim"));
 },[]);
 
-console.log(items);
-
-
     return (
         <div className="start">
             <div className="container">
                 <p className="subtitle">Selecione o filme</p>
-                <Link to="/filme"> Ir para tela de filme </Link>
             </div>
             <div className="movies-container">
-                {items.map(movie =>
-                    <div className="image-border">
-                        <img className="image" src={movie.posterURL} />
+                {items.map(item => 
+                <Link to = {`/filme${item.id}`}>
+                    <div className="image-border" key={item.id}>
+                        <img className="image" src={item.posterURL} />
                     </div>
-                )}
+                </Link>
+                    )}
             </div>
         </div>
     
