@@ -1,0 +1,15 @@
+.header-container {
+    background-color: var(--cor-header);
+    width: 375px;
+    height: 67px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-text {
+    font-family: Roboto;
+    font-weight: 400;
+    font-size: 34px;
+    color: var(--cor-laranja);
+}

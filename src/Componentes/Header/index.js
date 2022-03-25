@@ -1,6 +1,10 @@
-function Header () {
+import "./style.css"
+
+function Header() {
     return (
-        <h1>CINEFLEX</h1>
+        <div className="header-container">
+            <h1 className="header-text">CINEFLEX</h1>
+        </div>
     )
 }
 

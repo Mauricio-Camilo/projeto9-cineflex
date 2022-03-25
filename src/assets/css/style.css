@@ -1,5 +1,11 @@
 * {
    box-sizing: border-box;
+   --cor-header: #C3CFD9;
+   --cor-fundo: #FFFFFF;
+   --cor-footer: #DFE6ED;
+   --cor-laranja: #E8833A;
+   --cor-texto: #293845;
+   --cor-borda: #9EADBA;
    /* Inserir aqui as cores mais usadas no projeto */ 
 }
 
@@ -10,4 +16,6 @@
 
 body {
     font-family: 'Roboto', sans-serif;
+    background-color: var(--cor-fundo);
+    width: 374px; 
 }
