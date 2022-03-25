@@ -1,0 +1,82 @@
+.section {
+    width: 374px;
+}
+
+.section .top {
+    height: 110px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.section .subtitle {
+    font-family: Roboto;
+    font-weight: 400;
+    font-size: 24px;
+    color: var(--cor-texto);
+}
+
+.section .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0 20px;
+    margin-top: -20px;
+}
+
+.section .place {
+    width: 26px;
+    height: 26px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 7px;
+    margin-bottom: 18px;
+}
+
+.section .avaiable {
+    background-color: var(--cor-avaiable);
+    border: 1px solid var(--cor-avaiable-border)
+}
+
+.section .selected {
+    background-color: var(--cor-selected);
+    border: 1px solid var(--cor-selected-border)
+}
+
+.section .unavaiable {
+    background-color: var(--cor-unavaiable);
+    border: 1px solid var(--cor-unavaiable-border)
+}
+
+.section .place-text {
+    font-family: Roboto;
+    font-weight: 400;
+    font-size: 11px;
+}
+
+.section .options {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 0px 25px;   
+    margin-bottom: 50px; 
+}
+
+.section .option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.section .option-text {
+    font-size: 13px;
+    margin-top: -10px;
+}
+
+.section .footer {
+    background-color: var(--cor-footer);
+    width: 374px;
+    height: 110px;
+}
+

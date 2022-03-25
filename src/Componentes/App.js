@@ -13,8 +13,8 @@ function App() {
             <Header />
             <Routes>
                 <Route path="/" element={<Start />}/>
-                <Route path="/filme:filmeId" element={<Movie />}/>
-                <Route path="/sessao" element={<Section />}/>
+                <Route path="/filme/:filmeId" element={<Movie />}/>
+                <Route path="/sessao/:sessaoId" element={<Section />}/>
                 <Route path="/sucesso" element={<Success />}/>
             </Routes>
         </BrowserRouter>

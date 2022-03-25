@@ -26,7 +26,7 @@ useEffect(() => {
             </div>
             <div className="movies-container">
                 {items.map(item => 
-                <Link to = {`/filme${item.id}`}>
+                <Link to = {`/filme/${item.id}`}>
                     <div className="image-border" key={item.id}>
                         <img className="image" src={item.posterURL} />
                     </div>

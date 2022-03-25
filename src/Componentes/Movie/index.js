@@ -10,45 +10,51 @@ function Movie() {
 
     const { filmeId } = useParams();
 
-    useEffect (() => {
-    const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/movies/${filmeId}/showtimes`);
-    promise.then((response)=>{
-        const {data} = response;
-        const {days} = data;
-        console.log(days);
-        setOptions(days); 
+    useEffect(() => {
+        const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/movies/${filmeId}/showtimes`);
+        promise.then((response) => {
+            const { data } = response;
+            const { days } = data;
+            console.log(days);
+            setOptions(days);
         })
         promise.catch(() => console.log("deu ruim"));
-    },[])
+    }, [])
 
+    console.log(options);
 
     return (
-            <div className="movie">
-                <div className="top">
-                    <p className="subtitle">Selecione o horário</p>
-                </div>
-                <div className="container">
-                    {options.map(option => 
-                     <section className="section" key={option.id}>
-                     <p className="date"> {option.weekday} - {option.date}</p>
-                     <div className="options"> 
-                         <div className="time">
-                             <p className="time-text">{option.showtimes[0].name}</p>
-                         </div>
-                         <div className="time">
-                             <p className="time-text">{option.showtimes[1].name}</p>
-                         </div>
-                     </div>
-                 </section>
-                    )}
-                </div>
-                <footer className="footer">
-                    <p>Filme aqui</p>
-                </footer>
+        <div className="movie">
+            <div className="top">
+                <p className="subtitle">Selecione o horário</p>
             </div>
+            <div className="container">
+                {options.map(option =>
+                    <section className="section" key={option.id}>
+                        <p className="date"> {option.weekday} - {option.date}</p>
+                        <div className="options">
+                            <Link to={`/sessao/${option.showtimes[0].id}`}>
+                                <div className="time">
+                                    <p className="time-text">{option.showtimes[0].name}</p>
+                                </div>
+                            </Link >
+                            <Link to={`/sessao/${option.showtimes[1].id}`}>
+                                <div className="time">
+                                    <p className="time-text">{option.showtimes[1].name}</p>
+                                </div>
+                            </Link >
+
+                        </div>
+                    </section>
+                )}
+            </div>
+            <footer className="footer">
+                <p>Filme aqui</p>
+            </footer>
+        </div>
     )
 }
 
 export default Movie;
 
-{/* <Link to="/sessao"> Ir para sessão </Link> */}
+{/* <Link to="/sessao"> Ir para sessão </Link> */ }
