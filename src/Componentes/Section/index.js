@@ -13,7 +13,10 @@ function Section() {
 
     const PostApi = "https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many";
 
-    const [dados, setDados] = useState();
+    const [selected, setSelected] = useState(false);
+    const css = `place ${!selected ? "avaiable" : "selected"}`;
+
+    const [name, setName] = useState();
     const [cpf, setCpf] = useState();
 
     const [seatsId, Setseatsid] = useState(["01", "02", "03"]);
@@ -29,8 +32,8 @@ function Section() {
             posterTitle = data.movie.title;
             posterDay = data.day.weekday;
             posterTime = data.name;
-            console.log(posterURL)
             const { seats } = data;
+            console.log(seats);
             Setseatsid(seats);
         });
         promise.catch(() => console.log("deu ruim"));
@@ -39,7 +42,8 @@ function Section() {
     function enviarDados(event) {
         event.preventDefault(); // previne de recarregar a pagina
         const promise = axios.post(PostApi, {
-            name: dados,
+            ids: [1,2,3],
+            name: name,
             cpf: cpf
         })
         promise.then(response => console.log("Deu bom"))
@@ -55,12 +59,19 @@ function Section() {
             <div className="container">
                 <div className="container-section">
                     {seatsId.map(seatId =>
+
+
                         (seatId.isAvailable) ?
-                            <div className="place avaiable">
+
+
+                            <div onClick={() => setSelected(!selected)} className={css}>
                                 <p className="place-text">{seatId.name}</p>
                             </div>
+
+
                             :
-                            <div className="place unavaiable">
+                            <div onClick={() => alert("Esse assento não está disponível")} 
+                            className="place unavaiable">
                                 <p className="place-text">{seatId.name}</p>
                             </div>
                     )}
@@ -72,8 +83,8 @@ function Section() {
                     <div className="user">
                         <p className="user-data">Nome do comprador:</p>
                         <input type="text" placeholder="Digite seu nome..."
-                            onChange={(event) => setDados(event.target.value)}
-                            className="user-input" value={dados} />
+                            onChange={(event) => setName(event.target.value)}
+                            className="user-input" value={name} />
                     </div>
                     <div className="user">
                         <p className="user-data">CPF do comprador:</p>
@@ -81,14 +92,14 @@ function Section() {
                             onChange={(event) => setCpf(event.target.value)}
                             className="user-input" value={cpf} />
                     </div>
-                    {/* <Link to="/sucesso"> */}
+                    <Link to="/sucesso">
                     <button type="submit" className="button">
                         <span className="button-text"> Reservar assento(s)</span>
                     </button>
 
                     {/* LIMPAR O INPUT DEPOIS DE CLICAR NO BOTÃO ZERANDO O ESTADO */}
 
-                    {/* </Link> */}
+                    </Link>
                 </form>
             </div>
 

@@ -1,6 +1,11 @@
+import { useNavigate } from "react-router-dom";
+
 import "./style.css"
 
 function Success() {
+
+    const navigate = useNavigate ();
+
     return (
         <>
             <div className="success">
@@ -24,7 +29,7 @@ function Success() {
                         <p className="container-text">CPF: CPF do usuário</p>
                     </div>
                 </div>
-                <button type="submit" className="button">
+                <button onClick={() => navigate("/")} className="button">
                     <span className="button-text">Voltar pra Home</span>
                 </button>
             </div>
