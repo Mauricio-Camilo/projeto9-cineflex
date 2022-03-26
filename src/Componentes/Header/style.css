@@ -1,4 +1,10 @@
-.header-container {
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.header .cineflex {
     background-color: var(--cor-header);
     width: 375px;
     height: 67px;
@@ -7,7 +13,7 @@
     align-items: center;
 }
 
-.header-text {
+.header .text {
     font-family: Roboto;
     font-weight: 400;
     font-size: 34px;

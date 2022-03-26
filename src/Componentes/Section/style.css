@@ -1,5 +1,6 @@
 .section {
     width: 374px;
+    margin-top: 67px;
 }
 
 .section .top {
@@ -17,6 +18,10 @@
 }
 
 .section .container {
+    margin-bottom: 140px;
+}
+
+.section .container-section {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -74,9 +79,71 @@
     margin-top: -10px;
 }
 
+.section .user {
+    padding-left: 24px;
+}
+
+.section .user-data {
+    font-family: Roboto;
+    font-weight: 400;
+    font-size: 18px;
+}
+
+.section .user-input {
+    width: 327px;
+    height: 51px;
+    border-radius: 3px;
+    border: 1px solid #D5D5D5;
+    margin-top: 2px;
+    margin-bottom: 10px;
+}
+
+.section .button {
+    background-color: var(--cor-laranja);
+    width: 225px;
+    height: 42px;
+    border-radius: 3px;
+    margin-top: 50px;
+    margin-left: 72px;
+}
+
+.section .button-text {
+    font-family: Roboto;
+    font-weight: 400;
+    font-size: 18px;
+    color: #FFFFFF;
+}
+
 .section .footer {
     background-color: var(--cor-footer);
     width: 374px;
     height: 110px;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+}
+
+.section .poster-container {
+    background: white;
+    width: 64px;
+    height: 89px;
+    border-radius: 2px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 22px 16px;
+}
+
+.section .footer-poster {
+    width: 48px;
+    height: 72px;
+}
+
+.section .footer-title {
+    font-family: Roboto;
+    font-weight: 400;
+    font-size: 26px;
 }
 

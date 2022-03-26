@@ -1,4 +1,8 @@
-.start .container {
+.start {
+    margin-top: 67px;
+}
+
+.start .subheader {
     width: 374px;
     height: 110px;
     display: flex;
@@ -13,7 +17,7 @@
     color: var(--cor-texto);
 }
 
-.start .movies-container {
+.start .poster-container {
     width: 374px;
     display: flex;
     justify-content: space-evenly;

@@ -4,29 +4,48 @@ import axios from "axios";
 
 import "./style.css";
 
-const objetcs = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10"];
-
+let posterURL = "";
+let posterTitle = "";
+let posterDay = "";
+let posterTime = "";
 
 function Section() {
+
+    const PostApi = "https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many";
+
+    const [dados, setDados] = useState();
+    const [cpf, setCpf] = useState();
 
     const [seatsId, Setseatsid] = useState(["01", "02", "03"]);
 
     const { sessaoId } = useParams();
 
-    useEffect(()=> {
+    useEffect(() => {
         const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${sessaoId}/seats`);
-        promise.then((response)=>{
-            const {data} = response;
-            const {seats} = data;
+        promise.then((response) => {
+            const { data } = response;
+            console.log(data)
+            posterURL = data.movie.posterURL;
+            posterTitle = data.movie.title;
+            posterDay = data.day.weekday;
+            posterTime = data.name;
+            console.log(posterURL)
+            const { seats } = data;
             Setseatsid(seats);
         });
-        promise.catch(() => console.log("deu ruim"));    
-    },[])
+        promise.catch(() => console.log("deu ruim"));
+    }, [])
 
-    console.log(seatsId);
+    function enviarDados(event) {
+        event.preventDefault(); // previne de recarregar a pagina
+        const promise = axios.post(PostApi, {
+            name: dados,
+            cpf: cpf
+        })
+        promise.then(response => console.log("Deu bom"))
+        promise.catch(() => console.log("Deu ruim"))
+    }
 
-    const aux = seatsId[0].isAvailable;
-    console.log(aux);
 
     return (
         <div className="section">
@@ -34,41 +53,79 @@ function Section() {
                 <p className="subtitle">Selecione o(s) assento(s)</p>
             </div>
             <div className="container">
-                {seatsId.map(seatId =>
-                    (seatId.isAvailable)?
-                        <div className="place avaiable">
-                            <p className="place-text">{seatId.name}</p>
-                        </div>
-                        :
-                        <div className="place unavaiable">
-                            <p className="place-text">{seatId.name}</p>
-                        </div>
+                <div className="container-section">
+                    {seatsId.map(seatId =>
+                        (seatId.isAvailable) ?
+                            <div className="place avaiable">
+                                <p className="place-text">{seatId.name}</p>
+                            </div>
+                            :
+                            <div className="place unavaiable">
+                                <p className="place-text">{seatId.name}</p>
+                            </div>
                     )}
+                </div>
+
+                <SeatsOptions />
+
+                <form onSubmit={enviarDados}>
+                    <div className="user">
+                        <p className="user-data">Nome do comprador:</p>
+                        <input type="text" placeholder="Digite seu nome..."
+                            onChange={(event) => setDados(event.target.value)}
+                            className="user-input" value={dados} />
+                    </div>
+                    <div className="user">
+                        <p className="user-data">CPF do comprador:</p>
+                        <input type="text" placeholder="Digite seu CPF..."
+                            onChange={(event) => setCpf(event.target.value)}
+                            className="user-input" value={cpf} />
+                    </div>
+                    {/* <Link to="/sucesso"> */}
+                    <button type="submit" className="button">
+                        <span className="button-text"> Reservar assento(s)</span>
+                    </button>
+
+                    {/* LIMPAR O INPUT DEPOIS DE CLICAR NO BOTÃO ZERANDO O ESTADO */}
+
+                    {/* </Link> */}
+                </form>
             </div>
-            <SeatsOptions />
+
+
             <footer className="footer">
-                <p>Filme aqui</p>
+                <div className="poster-container">
+                    <img className="footer-poster" src={posterURL} />
+                </div>
+                <div className="title-container">
+                    <p className="footer-title">{posterTitle}</p>
+                    <p className="footer-title">{posterDay} - {posterTime}</p>
+                </div>
             </footer>
         </div>
     )
+
+    // function cleanData() {
+    //     setDados = ([]);
+    //     setCpf = ([]);
+    // }
 }
 
-function SeatsOptions () {
-    const options = [{ text: "Selecionado", class: "place selected"},
+
+function SeatsOptions() {
+    const options = [{ text: "Selecionado", class: "place selected" },
     { text: "Disponível", class: "place avaiable" },
     { text: "Indisponível", class: "place unavaiable" }];
     return (
         <div className="options">
-        {options.map(option =>
-            <div className="option">
-                <div className={option.class}>
-                </div>
-                <p className="option-text">{option.text}</p>
-            </div>)}
-    </div>
+            {options.map(option =>
+                <div className="option">
+                    <div className={option.class}>
+                    </div>
+                    <p className="option-text">{option.text}</p>
+                </div>)}
+        </div>
     )
 }
-
-{/* <Link to="/sucesso"> Ir para sucesso </Link> */ }
 
 export default Section;
