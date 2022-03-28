@@ -4,12 +4,14 @@ import axios from "axios";
 
 import "./style.css";
 
+import SeatsOptions from "./SeatsOptions"
+
 let posterURL = "";
 let posterTitle = "";
 let posterDay = "";
 let posterTime = "";
 
-function Section() {
+function Section(props) {
 
     const PostApi = "https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many";
 
@@ -19,22 +21,42 @@ function Section() {
     const [name, setName] = useState();
     const [cpf, setCpf] = useState();
 
-    const [seatsId, Setseatsid] = useState(["01", "02", "03"]);
+    const [seats, Setseats] = useState(["01", "02", "03"]);
+
+    console.log("teste", seats);
 
     const { sessaoId } = useParams();
+
+    function selectSeat(id) {
+        seats.forEach(seat => {
+            if (seat.id == id) {
+                seat.selected = true
+            }
+        })
+        Setseats([...seats]);
+    }
+
+    function deselectSeat(id) {
+        seats.forEach(seat => {
+            if (seat.id == id) {
+                seat.selected = false
+            }
+        })
+        Setseats([...seats]);
+    }
 
     useEffect(() => {
         const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${sessaoId}/seats`);
         promise.then((response) => {
             const { data } = response;
-            console.log(data)
+            console.log("leitura",data)
             posterURL = data.movie.posterURL;
             posterTitle = data.movie.title;
             posterDay = data.day.weekday;
             posterTime = data.name;
             const { seats } = data;
             console.log(seats);
-            Setseatsid(seats);
+            Setseats(seats);
         });
         promise.catch(() => console.log("deu ruim"));
     }, [])
@@ -42,12 +64,14 @@ function Section() {
     function enviarDados(event) {
         event.preventDefault(); // previne de recarregar a pagina
         const promise = axios.post(PostApi, {
-            ids: [1,2,3],
+            ids: [1, 2, 3],
             name: name,
             cpf: cpf
         })
         promise.then(response => console.log("Deu bom"))
         promise.catch(() => console.log("Deu ruim"))
+        console.log(name)
+        console.log(cpf)
     }
 
 
@@ -58,21 +82,28 @@ function Section() {
             </div>
             <div className="container">
                 <div className="container-section">
-                    {seatsId.map(seatId =>
+                    {seats.map(seat =>
 
 
-                        (seatId.isAvailable) ?
+                        (seat.isAvailable) ?
 
+                            seat.selected ?
 
-                            <div onClick={() => setSelected(!selected)} className={css}>
-                                <p className="place-text">{seatId.name}</p>
-                            </div>
+                                <div onClick={() => deselectSeat(seat.id)} className="place selected">
+                                    <p className="place-text">{seat.name}</p>
+                                </div>
 
+                                :
+
+                                <div onClick={() => selectSeat(seat.id)} className="place avaiable">
+                                    <p className="place-text">{seat.name}</p>
+                                </div>
 
                             :
-                            <div onClick={() => alert("Esse assento não está disponível")} 
-                            className="place unavaiable">
-                                <p className="place-text">{seatId.name}</p>
+
+                            <div onClick={() => alert("Esse assento não está disponível")}
+                                className="place unavaiable">
+                                <p className="place-text">{seat.name}</p>
                             </div>
                     )}
                 </div>
@@ -92,14 +123,11 @@ function Section() {
                             onChange={(event) => setCpf(event.target.value)}
                             className="user-input" value={cpf} />
                     </div>
-                    <Link to="/sucesso">
+                    {/* <Link to="/sucesso"> */}
                     <button type="submit" className="button">
                         <span className="button-text"> Reservar assento(s)</span>
                     </button>
-
-                    {/* LIMPAR O INPUT DEPOIS DE CLICAR NO BOTÃO ZERANDO O ESTADO */}
-
-                    </Link>
+                    {/* </Link> */}
                 </form>
             </div>
 
@@ -113,28 +141,6 @@ function Section() {
                     <p className="footer-title">{posterDay} - {posterTime}</p>
                 </div>
             </footer>
-        </div>
-    )
-
-    // function cleanData() {
-    //     setDados = ([]);
-    //     setCpf = ([]);
-    // }
-}
-
-
-function SeatsOptions() {
-    const options = [{ text: "Selecionado", class: "place selected" },
-    { text: "Disponível", class: "place avaiable" },
-    { text: "Indisponível", class: "place unavaiable" }];
-    return (
-        <div className="options">
-            {options.map(option =>
-                <div className="option">
-                    <div className={option.class}>
-                    </div>
-                    <p className="option-text">{option.text}</p>
-                </div>)}
         </div>
     )
 }

@@ -1,11 +1,13 @@
 import { Link, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import MyContext from "../context/Mycontext";
 
 import "./style.css";
 
 let posterURL = "";
 let posterTitle = "";
+
 
 function Movie() {
 
@@ -17,7 +19,6 @@ function Movie() {
         const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/movies/${filmeId}/showtimes`);
         promise.then((response) => {
             const { data } = response;
-            console.log(data);
             posterURL = data.posterURL;
             posterTitle = data.title;
             const { days } = data;
@@ -26,7 +27,7 @@ function Movie() {
         promise.catch(() => console.log("deu ruim"));
     }, [])
 
-    console.log(posterURL);
+    console.log(options);
 
     return (
         <div className="movie">
@@ -38,7 +39,7 @@ function Movie() {
                     <div className="container-section">
                         <p className="date"> {option.weekday} - {option.date}</p>
                         <div className="options">
-                            <Link to={`/sessao/${option.showtimes[0].id}`} element={"oi"}>
+                            <Link to={`/sessao/${option.showtimes[0].id}`} element={option.showtimes[0].id}>
                                 <div className="time" key={option.showtimes[0].id}>
                                     <p className="time-text">{option.showtimes[0].name}</p>
                                 </div>
