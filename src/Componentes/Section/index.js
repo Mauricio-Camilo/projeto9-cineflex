@@ -1,4 +1,5 @@
-import { Link, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -6,26 +7,29 @@ import "./style.css";
 
 import SeatsOptions from "./SeatsOptions"
 
+// CONSTANTES CRIADAS PARA SEREM RENDERIZADAS NO FOOTER
+
 let posterURL = "";
 let posterTitle = "";
 let posterDay = "";
 let posterTime = "";
 
-function Section(props) {
+function Section() {
 
     const PostApi = "https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many";
 
-    const [selected, setSelected] = useState(false);
-    const css = `place ${!selected ? "avaiable" : "selected"}`;
+    const navigate = useNavigate ();
 
     const [name, setName] = useState();
     const [cpf, setCpf] = useState();
-
-    const [seats, Setseats] = useState(["01", "02", "03"]);
-
-    console.log("teste", seats);
+    const [seats, Setseats] = useState([]);
 
     const { sessaoId } = useParams();
+
+    // FUNÇÕES QUE MUDAM O ESTADO DOS ASSENTOS DE SELECIONADO PARA DISPONÍVEL 
+
+    /* Se o assento não estiver selecionado, coloca uma nova key no objeto indicado
+    que o assento pode ser selecionado */
 
     function selectSeat(id) {
         seats.forEach(seat => {
@@ -36,6 +40,9 @@ function Section(props) {
         Setseats([...seats]);
     }
 
+      /* Se o assento estiver selecionado, invalida a key inserida no objeto indicado
+    que o assento não é mais selecionável*/
+
     function deselectSeat(id) {
         seats.forEach(seat => {
             if (seat.id == id) {
@@ -45,35 +52,34 @@ function Section(props) {
         Setseats([...seats]);
     }
 
+    // BUSCA DOS DADOS DA API E PREENCHIMENTO DAS VARIÁVEIS DO FOOTER
+
     useEffect(() => {
         const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${sessaoId}/seats`);
         promise.then((response) => {
             const { data } = response;
-            console.log("leitura",data)
             posterURL = data.movie.posterURL;
             posterTitle = data.movie.title;
             posterDay = data.day.weekday;
             posterTime = data.name;
             const { seats } = data;
-            console.log(seats);
             Setseats(seats);
         });
-        promise.catch(() => console.log("deu ruim"));
+        promise.catch(() => console.log("Falha na aquisição dos dados"));
     }, [])
 
-    function enviarDados(event) {
+    // FUNÇÃO CRIADA PARA NÃO RECARREGAR A PÁGINA E ENVIAR OS DADOS PARA O SERVIDOR 
+
+    function sendData(event) {
         event.preventDefault(); // previne de recarregar a pagina
         const promise = axios.post(PostApi, {
             ids: [1, 2, 3],
             name: name,
             cpf: cpf
         })
-        promise.then(response => console.log("Deu bom"))
-        promise.catch(() => console.log("Deu ruim"))
-        console.log(name)
-        console.log(cpf)
+        promise.then(response => navigate("/sucesso", {nome: name}));
+        promise.catch(() => console.log("Falha no envio dos dados"));
     }
-
 
     return (
         <div className="section">
@@ -83,24 +89,16 @@ function Section(props) {
             <div className="container">
                 <div className="container-section">
                     {seats.map(seat =>
-
-
-                        (seat.isAvailable) ?
-
-                            seat.selected ?
-
+                        (seat.isAvailable)? // Verifica se o assento pode ser clicado ou não
+                            seat.selected? // Verifica se o assento pode ser selecionado
                                 <div onClick={() => deselectSeat(seat.id)} className="place selected">
                                     <p className="place-text">{seat.name}</p>
                                 </div>
-
                                 :
-
                                 <div onClick={() => selectSeat(seat.id)} className="place avaiable">
                                     <p className="place-text">{seat.name}</p>
                                 </div>
-
                             :
-
                             <div onClick={() => alert("Esse assento não está disponível")}
                                 className="place unavaiable">
                                 <p className="place-text">{seat.name}</p>
@@ -110,7 +108,7 @@ function Section(props) {
 
                 <SeatsOptions />
 
-                <form onSubmit={enviarDados}>
+                <form onSubmit={sendData}>
                     <div className="user">
                         <p className="user-data">Nome do comprador:</p>
                         <input type="text" placeholder="Digite seu nome..."
@@ -123,14 +121,11 @@ function Section(props) {
                             onChange={(event) => setCpf(event.target.value)}
                             className="user-input" value={cpf} />
                     </div>
-                    {/* <Link to="/sucesso"> */}
                     <button type="submit" className="button">
                         <span className="button-text"> Reservar assento(s)</span>
                     </button>
-                    {/* </Link> */}
                 </form>
             </div>
-
 
             <footer className="footer">
                 <div className="poster-container">

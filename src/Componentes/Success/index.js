@@ -1,9 +1,8 @@
 import { useNavigate } from "react-router-dom";
-
 import "./style.css"
 
 function Success() {
-
+ 
     const navigate = useNavigate ();
 
     return (
@@ -15,7 +14,7 @@ function Success() {
                 <div className="container">
                     <div className="subcontainer">
                         <p className="container-head">Filme e sessão</p>
-                        <p className="container-text">Enola Holmes</p>
+                        <p className="container-text">Titulo do filme</p>
                         <p className="container-text">Data e Horário</p>
 
                     </div>

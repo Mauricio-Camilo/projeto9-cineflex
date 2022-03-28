@@ -22,7 +22,6 @@
 }
 
 .movie .container-section {
-    /* background-color: blue; */
     padding-left: 24px;
 }
 
@@ -33,7 +32,6 @@
 }
 
 .movie .options {
-    /* background-color: purple; */
     display: flex;
     align-items: center; 
     margin: 30px 0;

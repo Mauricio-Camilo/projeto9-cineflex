@@ -32,7 +32,6 @@ useEffect(() => {
                     )}
             </div>
         </div>
-    
     )
 }
 

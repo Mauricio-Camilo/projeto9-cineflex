@@ -13,15 +13,7 @@
    --cor-unavaiable: #FBE192;
    --cor-unavaiable-border: #F7C52B;
    --cor-success: #247A6B;
-
-
-   /* Inserir aqui as cores mais usadas no projeto */ 
 }
-
-/* Como declarar e inserir uma cor
-  --cor-fundo: #FB6B6B;
-    background-color: var(--cor-fundo);
-*/
 
 body {
     font-family: 'Roboto', sans-serif;

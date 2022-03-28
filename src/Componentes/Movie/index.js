@@ -1,18 +1,14 @@
 import { Link, useParams } from "react-router-dom";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import MyContext from "../context/Mycontext";
-
 import "./style.css";
 
 let posterURL = "";
 let posterTitle = "";
 
-
 function Movie() {
 
     const [options, setOptions] = useState([]);
-
     const { filmeId } = useParams();
 
     useEffect(() => {
@@ -24,10 +20,8 @@ function Movie() {
             const { days } = data;
             setOptions(days);
         })
-        promise.catch(() => console.log("deu ruim"));
+        promise.catch(() => console.log("Falha na aquisição dos dados"));
     }, [])
-
-    console.log(options);
 
     return (
         <div className="movie">
