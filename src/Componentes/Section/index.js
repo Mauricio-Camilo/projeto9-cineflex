@@ -14,7 +14,11 @@ let posterTitle = "";
 let posterDay = "";
 let posterTime = "";
 
-function Section() {
+function Section(props) {
+
+    console.log(props);
+
+    const {finalizar} = props; // finalizar é o nome da propriedade que contém uma função dentro dela.
 
     const PostApi = "https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many";
 
@@ -77,7 +81,18 @@ function Section() {
             name: name,
             cpf: cpf
         })
-        promise.then(response => navigate("/sucesso", {nome: name}));
+        promise.then(response => {
+            // No componente pai, ele vai passar parâmetros para a função de atualização de estado.
+            // Essa função executa apenas isso, passar parâmetros para atualizar o estado no pai.
+            finalizar({
+                filme: posterTitle,
+                dia: posterDay,
+                horario: posterTime,
+                nome: name,
+                cpf: cpf
+            });
+            navigate("/sucesso");
+        });
         promise.catch(() => console.log("Falha no envio dos dados"));
     }
 

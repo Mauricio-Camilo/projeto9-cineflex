@@ -33,12 +33,12 @@ function Movie() {
                     <div className="container-section">
                         <p className="date"> {option.weekday} - {option.date}</p>
                         <div className="options">
-                            <Link to={`/sessao/${option.showtimes[0].id}`} element={option.showtimes[0].id}>
-                                <div className="time" key={option.showtimes[0].id}>
+                            <Link key={option.showtimes[0].id} to={`/sessao/${option.showtimes[0].id}`} element={option.showtimes[0].id}>
+                                <div className="time">
                                     <p className="time-text">{option.showtimes[0].name}</p>
                                 </div>
                             </Link >
-                            <Link to={`/sessao/${option.showtimes[1].id}`}>
+                            <Link key={option.showtimes[1].id} to={`/sessao/${option.showtimes[1].id}`}>
                                 <div className="time" key={option.showtimes[1].id}>
                                     <p className="time-text">{option.showtimes[1].name}</p>
                                 </div>

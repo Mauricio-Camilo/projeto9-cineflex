@@ -1,7 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import "./style.css"
 
-function Success() {
+function Success(props) {
+
+    console.log(props);
+
+    const {reserva} = props;
+    const {filme, dia, horario, nome, cpf} = reserva;
  
     const navigate = useNavigate ();
 
@@ -14,8 +19,8 @@ function Success() {
                 <div className="container">
                     <div className="subcontainer">
                         <p className="container-head">Filme e sessão</p>
-                        <p className="container-text">Titulo do filme</p>
-                        <p className="container-text">Data e Horário</p>
+                        <p className="container-text">{filme}</p>
+                        <p className="container-text">{dia} - {horario}</p>
 
                     </div>
                     <div className="subcontainer">
@@ -24,8 +29,8 @@ function Success() {
                     </div>
                     <div className="subcontainer">
                         <p className="container-head">Comprador</p>
-                        <p className="container-text">Nome: Nome do usuário</p>
-                        <p className="container-text">CPF: CPF do usuário</p>
+                        <p className="container-text">Nome: {nome}</p>
+                        <p className="container-text">CPF: {cpf}</p>
                     </div>
                 </div>
                 <button onClick={() => navigate("/")} className="button">
