@@ -4,7 +4,7 @@ A website with several movies for the user to choice and guarantee the details o
 
 ## About
 
-This is a web searchs all the movies avaiable in an API, and performs the entire procedure to reserve the chosen movie. Below are the implemented features:
+This is a web application that searchs all the movies avaiable in an API, and performs the entire procedure to reserve the chosen movie. Below are the implemented features:
 
 - Single Page Application
 - Movies, sections and seat choice
