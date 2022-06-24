@@ -16,8 +16,6 @@ let posterTime = "";
 
 function Section(props) {
 
-    console.log(props);
-
     const {finalizar} = props; // finalizar é o nome da propriedade que contém uma função dentro dela.
 
     const PostApi = "https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many";
@@ -27,34 +25,10 @@ function Section(props) {
     const [name, setName] = useState();
     const [cpf, setCpf] = useState();
     const [seats, Setseats] = useState([]);
+    const [selectedSeats, setSelectedSeats] = useState(new Map());
 
     const { sessaoId } = useParams();
 
-    // FUNÇÕES QUE MUDAM O ESTADO DOS ASSENTOS DE SELECIONADO PARA DISPONÍVEL 
-
-    /* Se o assento não estiver selecionado, coloca uma nova key no objeto indicado
-    que o assento pode ser selecionado */
-
-    function selectSeat(id) {
-        seats.forEach(seat => {
-            if (seat.id == id) {
-                seat.selected = true
-            }
-        })
-        Setseats([...seats]);
-    }
-
-      /* Se o assento estiver selecionado, invalida a key inserida no objeto indicado
-    que o assento não é mais selecionável*/
-
-    function deselectSeat(id) {
-        seats.forEach(seat => {
-            if (seat.id == id) {
-                seat.selected = false
-            }
-        })
-        Setseats([...seats]);
-    }
 
     // BUSCA DOS DADOS DA API E PREENCHIMENTO DAS VARIÁVEIS DO FOOTER
 
@@ -68,16 +42,31 @@ function Section(props) {
             posterTime = data.name;
             const { seats } = data;
             Setseats(seats);
+            console.log(seats);
         });
         promise.catch(() => console.log("Falha na aquisição dos dados"));
-    }, [])
+    }, []);
+
+    function selectSeat (id, number) {
+        const checkSeat = selectedSeats.has(id);
+        if (checkSeat) {
+            selectedSeats.delete(id);
+            setSelectedSeats(new Map(selectedSeats))
+        }
+        else {
+            setSelectedSeats(new Map(selectedSeats.set(id,number)))
+        }
+        console.log(selectedSeats);
+        console.log([...selectedSeats.keys()]);
+    }
 
     // FUNÇÃO CRIADA PARA NÃO RECARREGAR A PÁGINA E ENVIAR OS DADOS PARA O SERVIDOR 
 
+    // README: ENVIAR O POST CORRETAMENTE, COM AS CHAVES DO MAPA
     function sendData(event) {
         event.preventDefault(); // previne de recarregar a pagina
         const promise = axios.post(PostApi, {
-            ids: [1, 2, 3],
+            ids: [...selectedSeats.keys()],
             name: name,
             cpf: cpf
         })
@@ -89,7 +78,8 @@ function Section(props) {
                 dia: posterDay,
                 horario: posterTime,
                 nome: name,
-                cpf: cpf
+                cpf: cpf,
+                assentos:[...selectedSeats.keys()] // VERIFICAR ESSE ENVIO
             });
             navigate("/sucesso");
         });
@@ -103,22 +93,23 @@ function Section(props) {
             </div>
             <div className="container">
                 <div className="container-section">
-                    {seats.map(seat =>
-                        (seat.isAvailable)? // Verifica se o assento pode ser clicado ou não
-                            seat.selected? // Verifica se o assento pode ser selecionado
-                                <div onClick={() => deselectSeat(seat.id)} className="place selected">
-                                    <p className="place-text">{seat.name}</p>
+                    {seats.map(seat => {
+                            const {id, name} = seat
+                            let newClass = "";
+                            const checkSelecionado = selectedSeats.has(id);
+                            checkSelecionado? newClass = "place selected":  newClass ="place avaiable";
+                            return (
+                                (seat.isAvailable)? // Verifica se o assento pode ser clicado ou não
+                                <div onClick={() => selectSeat(id,name)} className={newClass}>
+                                    <p className="place-text">{name}</p>
                                 </div>
                                 :
-                                <div onClick={() => selectSeat(seat.id)} className="place avaiable">
-                                    <p className="place-text">{seat.name}</p>
+                                <div onClick={() => alert("Esse assento não está disponível")}
+                                    className="place unavaiable">
+                                    <p className="place-text">{name}</p>
                                 </div>
-                            :
-                            <div onClick={() => alert("Esse assento não está disponível")}
-                                className="place unavaiable">
-                                <p className="place-text">{seat.name}</p>
-                            </div>
-                    )}
+                            )
+                        })}
                 </div>
 
                 <SeatsOptions />
