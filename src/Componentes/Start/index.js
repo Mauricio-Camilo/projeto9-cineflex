@@ -24,8 +24,8 @@ useEffect(() => {
             </div>
             <div className="poster-container">
                 {items.map(item => {
-                    const {id,posterURL} = item; // Aplicação do destructuring feita, precisa colocas as chaves e o return com parenteses.
-                    return (    // Passar o key dentro do link pra eliminar o erro do child.
+                    const {id,posterURL} = item; 
+                    return (   
                 <Link key={id} to = {`/filme/${id}`}> 
                     <div className="image-border" >
                         <img className="image" src={posterURL}/>

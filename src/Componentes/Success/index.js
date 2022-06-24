@@ -6,7 +6,11 @@ function Success(props) {
     console.log(props);
 
     const {reserva} = props;
-    const {filme, dia, horario, nome, cpf} = reserva;
+    const {filme, dia, horario, nome, cpf, assentos} = reserva;
+
+    const numeroAssentos = [...assentos.values()];
+
+    console.log(numeroAssentos);
  
     const navigate = useNavigate ();
 
@@ -25,7 +29,9 @@ function Success(props) {
                     </div>
                     <div className="subcontainer">
                         <p className="container-head">Ingressos</p>
-                        <p className="container-text">Assento</p>
+                        {numeroAssentos.map(numero => 
+                            <p className="container-text">{`Assento ${numero}`}</p>
+                        )}
                     </div>
                     <div className="subcontainer">
                         <p className="container-head">Comprador</p>

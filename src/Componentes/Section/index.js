@@ -7,8 +7,6 @@ import "./style.css";
 
 import SeatsOptions from "./SeatsOptions"
 
-// CONSTANTES CRIADAS PARA SEREM RENDERIZADAS NO FOOTER
-
 let posterURL = "";
 let posterTitle = "";
 let posterDay = "";
@@ -28,9 +26,6 @@ function Section(props) {
     const [selectedSeats, setSelectedSeats] = useState(new Map());
 
     const { sessaoId } = useParams();
-
-
-    // BUSCA DOS DADOS DA API E PREENCHIMENTO DAS VARIÁVEIS DO FOOTER
 
     useEffect(() => {
         const promise = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${sessaoId}/seats`);
@@ -57,14 +52,11 @@ function Section(props) {
             setSelectedSeats(new Map(selectedSeats.set(id,number)))
         }
         console.log(selectedSeats);
-        console.log([...selectedSeats.keys()]);
+        console.log([...selectedSeats.values()]);
     }
 
-    // FUNÇÃO CRIADA PARA NÃO RECARREGAR A PÁGINA E ENVIAR OS DADOS PARA O SERVIDOR 
-
-    // README: ENVIAR O POST CORRETAMENTE, COM AS CHAVES DO MAPA
     function sendData(event) {
-        event.preventDefault(); // previne de recarregar a pagina
+        event.preventDefault();
         const promise = axios.post(PostApi, {
             ids: [...selectedSeats.keys()],
             name: name,
@@ -79,7 +71,7 @@ function Section(props) {
                 horario: posterTime,
                 nome: name,
                 cpf: cpf,
-                assentos:[...selectedSeats.keys()] // VERIFICAR ESSE ENVIO
+                assentos: selectedSeats
             });
             navigate("/sucesso");
         });
@@ -99,7 +91,7 @@ function Section(props) {
                             const checkSelecionado = selectedSeats.has(id);
                             checkSelecionado? newClass = "place selected":  newClass ="place avaiable";
                             return (
-                                (seat.isAvailable)? // Verifica se o assento pode ser clicado ou não
+                                (seat.isAvailable)? 
                                 <div onClick={() => selectSeat(id,name)} className={newClass}>
                                     <p className="place-text">{name}</p>
                                 </div>
